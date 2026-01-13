@@ -85,18 +85,48 @@ RETURN </a>
      renderTable();
 };
 
-   function renderTable() {
-     const tableBody = document.getElementById('tableBody1');
-     tableBody.innerHTML = '';
-     
-     const data = JSON.parse(localStorage.getItem('tableData1')) || [];
+function renderTable() {
+  const tableBody = document.getElementById('tableBody1');
+  tableBody.innerHTML = '';
 
-   data
-     .sort((a, b) => a.due.localeCompare(b.due))
-     .forEach(entry => {
-      addRowToTable(entry.task, entry.due);
+  const data = JSON.parse(localStorage.getItem('tableData1')) || [];
+
+  let lastDate = null;
+
+  data
+    .sort((a, b) => a.due.localeCompare(b.due))
+    .forEach(entry => {
+
+      // Insert date header if date changed
+      if (entry.due !== lastDate) {
+        const dateRow = document.createElement('tr');
+        dateRow.innerHTML = `
+          <td colspan="3" style="
+            background:#e8e8e8;
+            font-weight:bold;
+          ">
+            📅 ${formatDate(entry.due)}
+          </td>
+        `;
+        tableBody.appendChild(dateRow);
+        lastDate = entry.due;
+      }
+
+      // Task row
+      const taskRow = document.createElement('tr');
+      taskRow.innerHTML = `
+        <td>${escapeHtml(entry.due)}</td>
+        <td>${escapeHtml(entry.task)}</td>
+        <td>
+          <button onclick="removeRowByValue('${escapeJs(entry.task)}','${entry.due}')">
+            Finished
+          </button>
+        </td>
+      `;
+      tableBody.appendChild(taskRow);
     });
 }
+
 
 
 
@@ -142,17 +172,13 @@ RETURN </a>
       localStorage.setItem('tableData1', JSON.stringify(data));
     }
 
-    function removeRow(button) {
-  const row = button.closest('tr');
-  const task = row.dataset.task;
-  const due = row.dataset.due;
-
-  let data = JSON.parse(localStorage.getItem('tableData1')) || [];
-  data = data.filter(entry => !(entry.task === task && entry.due === due));
-  localStorage.setItem('tableData1', JSON.stringify(data));
-
-  renderTable();
+     function removeRowByValue(task, due) {
+       let data = JSON.parse(localStorage.getItem('tableData1')) || [];
+       data = data.filter(e => !(e.task === task && e.due === due));
+       localStorage.setItem('tableData1', JSON.stringify(data));
+       renderTable();
 }
+
 
     function clearAll() {
       if (confirm("Are you sure you want to clear all tasks?")) {
@@ -166,6 +192,15 @@ RETURN </a>
       div.textContent = text;
       return div.innerHTML;
     }
+
+    function formatDate(iso) {
+      return new Date(iso + "T00:00:00").toLocaleDateString();
+}
+
+function escapeJs(text) {
+  return text.replace(/'/g, "\\'");
+}
+
   </script>
 
 </body>

@@ -55,71 +55,115 @@
 <center>
 <a href='Personal Dashboard.html' style="margin-right: 15px;">
 RETURN </a>
-<a href='Personal Tasks.html' style="margin-right: 15px;">
- NON-WORK TASKS</a>
+<a href='Personal Tasks.html' style="margin-right: 15px;">NON-WORK TASKS</a>
 
 
   <div id="inputWrapper">
-    <input type="text" id="task" placeholder="Enter Task">
-    <input type="due" id="due" placeholder="Enter Due Date">
+    <input type="text" id="task" placeholder="Enter Plan/Task">
+    <input type="date" id="due" placeholder="Enter Due Date">
     <button onclick="addRow()">Add Row</button>
   </div>
 
   <table>
     <thead>
       <tr>
-        <th>Task</th>
         <th>Due Date</th>
+        <th>Task</th>
         <th>Action</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
   </table>
+
 <br><br><br><br>
   <div id="clearWrapper">
     <button onclick="clearAll()">Clear All</button>
   </div>
 
   <script>
-    window.onload = function () {
-      const savedData = JSON.parse(localStorage.getItem('tableData')) || [];
-      savedData.forEach(entry => {
-        addRowToTable(entry.task, entry.due);
-      });
-    };
+     window.onload = function () {
+     renderTable();
+};
 
-    function addRow() {
-      const taskInput = document.getElementById('task');
-      const dueInput = document.getElementById('due');
-      const task = taskInput.value.trim();
-      const due = dueInput.value.trim();
+function renderTable() {
+  const tableBody = document.getElementById('tableBody');
+  tableBody.innerHTML = '';
 
-      if (!task || !due) {
-        alert('Please fill in both fields.');
-        return;
+  const data = JSON.parse(localStorage.getItem('tableData')) || [];
+
+  let lastDate = null;
+
+  data
+    .sort((a, b) => a.due.localeCompare(b.due))
+    .forEach(entry => {
+
+      // Insert date header if date changed
+      if (entry.due !== lastDate) {
+        const dateRow = document.createElement('tr');
+        dateRow.innerHTML = `
+          <td colspan="3" style="
+            background:#e8e8e8;
+            font-weight:bold;
+          ">
+            📅 ${formatDate(entry.due)}
+          </td>
+        `;
+        tableBody.appendChild(dateRow);
+        lastDate = entry.due;
       }
 
-      saveToLocalStorage(task, due);
-      addRowToTable(task, due);
+      // Task row
+      const taskRow = document.createElement('tr');
+      taskRow.innerHTML = `
+        <td>${escapeHtml(entry.due)}</td>
+        <td>${escapeHtml(entry.task)}</td>
+        <td>
+          <button onclick="removeRowByValue('${escapeJs(entry.task)}','${entry.due}')">
+            Finished
+          </button>
+        </td>
+      `;
+      tableBody.appendChild(taskRow);
+    });
+}
 
-      taskInput.value = '';
-      dueInput.value = '';
-    }
+
+
+
+    function addRow() {
+  const taskInput = document.getElementById('task');
+  const dueInput = document.getElementById('due');
+
+  const due = dueInput.value.trim();
+  const task = taskInput.value.trim();
+
+  if (!task || !due) return;
+
+  const data = JSON.parse(localStorage.getItem('tableData')) || [];
+  data.push({ task, due });
+  localStorage.setItem('tableData', JSON.stringify(data));
+
+  taskInput.value = '';
+  dueInput.value = '';
+
+  renderTable();
+}
+
 
     function addRowToTable(task, due) {
-      const tableBody = document.getElementById('tableBody');
-      const newRow = document.createElement('tr');
+        const tableBody = document.getElementById('tableBody');
+        const newRow = document.createElement('tr');
 
-      newRow.innerHTML = `
-        <td>${escapeHtml(task)}</td>
-        <td>${escapeHtml(due)}</td>
-        <td><button onclick="removeRow(this)">Finished</button></td>
-      `;
+        newRow.innerHTML = `
+          <td>${escapeHtml(due)}</td>
+          <td>${escapeHtml(task)}</td>
+          <td><button onclick="removeRow(this)">Finished</button></td>
+          `;
 
-      newRow.dataset.task = task;
-      newRow.dataset.due = due;
+         newRow.dataset.due = due;
+         newRow.dataset.task = task;
 
-      tableBody.appendChild(newRow);
+         tableBody.appendChild(newRow);
     }
 
     function saveToLocalStorage(task, due) {
@@ -128,17 +172,13 @@ RETURN </a>
       localStorage.setItem('tableData', JSON.stringify(data));
     }
 
-    function removeRow(button) {
-      const row = button.closest('tr');
-      const task = row.dataset.task;
-      const due = row.dataset.due;
+     function removeRowByValue(task, due) {
+       let data = JSON.parse(localStorage.getItem('tableData')) || [];
+       data = data.filter(e => !(e.task === task && e.due === due));
+       localStorage.setItem('tableData', JSON.stringify(data));
+       renderTable();
+}
 
-      row.remove();
-
-      let data = JSON.parse(localStorage.getItem('tableData')) || [];
-      data = data.filter(entry => !(entry.task === task && entry.due === due));
-      localStorage.setItem('tableData', JSON.stringify(data));
-    }
 
     function clearAll() {
       if (confirm("Are you sure you want to clear all tasks?")) {
@@ -152,7 +192,15 @@ RETURN </a>
       div.textContent = text;
       return div.innerHTML;
     }
-  </script>
 
+    function formatDate(iso) {
+      return new Date(iso + "T00:00:00").toLocaleDateString();
+}
+
+function escapeJs(text) {
+  return text.replace(/'/g, "\\'");
+}
+
+  </script>
 </body>
 </html>
