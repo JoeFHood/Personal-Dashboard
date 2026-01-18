@@ -1,177 +1,237 @@
-<!-- at the moment table entries need to be updated in the HTML -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Personal Dashboard </title>
-    <style>
-            .center-table {
-                margin-left: auto;
-                margin-right: auto;
-            }
-        
-            body {
-                background-color: #f0f0f0;
-                  
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Dashboard</title>
 
+  <style>
+    /* ---------- Base Styles ---------- */
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Roboto, Arial, sans-serif;
+      background-color: #f4f6f8;
+      background-image: url('Texas.jpeg');
+      background-repeat: no-repeat;
+      background-size: 120px auto;
+      background-position: 95% 90%;
+      color: #222;
+    }
 
-            body {
-                 background-image: url('Texas.jpeg');
-                 background-repeat: no-repeat; /* Prevents image from tiling */
-                 background-size: 10% 20%;
-               /*  background-size: cover;  Ensures image covers the entire area */
-                /* background-position: right; Centers the image */ 
-               /*  background-position: 95% 85%;*/ /* 25% from left, 75% from top */
-            }
-       
-            .header-wrapper {
-                display: flex;
-                align-items: center;
-                justify-content: center; /* centers the whole row */
-                gap: 20px; /* space between elements */
-                margin-top: 50px;
-            }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-               .header-wrapper img {
-               width: 100px;
-               height: 100px;
-            }
+    /* ---------- Navigation Bar ---------- */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      background: #1f2933;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
 
-              .header-wrapper h1 {
-              margin: 0;
-              font-size: 2rem;
-            }    
+    .navbar h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
 
-        table {
-            width: 80%;
-            border-collapse: collapse;
-            margin-top: 40px;
-        }
-        th, td {
-            border: 1px solid #444;
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #FFFACD;
-        }
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
 
-        th {
-            color: blue;
-            text-decoration: underline;
-        }
+    .nav-links a {
+      font-size: 0.9rem;
+      color: #cfd8e3;
+    }
 
-	h3 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-	h1 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
+    .nav-links a:hover {
+      color: #ffffff;
+    }
 
-    </style>
+    /* ---------- Header ---------- */
+    .header-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin: 40px 0 20px;
+    }
+
+    .header-wrapper img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.2rem;
+      text-align: center;
+    }
+
+    /* ---------- Meta Info ---------- */
+    .developer-note {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .page-path {
+      text-align: center;
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 24px;
+    }
+
+    /* ---------- Horizontal Rules ---------- */
+    hr {
+      border: none;
+      width: 80%;
+      margin: 16px auto;
+    }
+
+    .hr-primary {
+      height: 2px;
+      background: linear-gradient(to right, green, yellow, blue);
+    }
+
+    /* ---------- Calendar ---------- */
+    .calendar-container {
+      display: flex;
+      justify-content: center;
+      margin: 24px 0;
+    }
+
+    iframe {
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* ---------- Icon Grid ---------- */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 32px auto 48px;
+      padding: 0 20px;
+    }
+
+    .icon-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+
+    .icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    .icon-label {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- build top line with two pictures and a title. -->
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h2>My Dashboard</h2>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="Work Related Tasks.html">Work</a>
+      <a href="Personal Tasks.html">Personal</a>
+      <a href="https://www.springbranchisd.com/">SBISD</a>
+    </div>
+  </nav>
 
-    <div class="header-wrapper">
-    <img src='Cake.jpeg' alt="Left Image">
-    <h1>Your Dashboard<br>  </h1>
-    <img src='DisneyGate.jpeg' alt="Right Image">
+  <!-- Header -->
+  <div class="header-wrapper">
+    <img src="Cake.jpeg" alt="Left image">
+    <h1>Your Dashboard</h1>
+    <img src="DisneyGate.jpeg" alt="Right image">
   </div>
 
-<!-- Give address of this WEB as there are several versions being worked -->
-<br>
-<p id="demoAAA"></p>
-<script>
-document.getElementById("demoAAA").innerHTML ="Page path is: " + window.location.pathname;
+  <!-- Meta -->
+  <p class="developer-note">Provided by the developer known as LaTech-Dev</p>
+  <p id="pagePath" class="page-path"></p>
 
+  <hr class="hr-primary">
 
-</script>
-<!--<div style="text-align:center;"><br>
-<a href='thisweekplan.html' style="margin-right: 15px;">
-THIS WEEK'S PLAN </a>
+  <!-- Calendar -->
+  <div class="calendar-container">
+    <iframe
+      src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=America/New_York"
+      width="600"
+      height="200"
+      scrolling="no">
+    </iframe>
+  </div>
 
-<a href='nextweekplan.html' style="margin-right: 15px;">
-NEXT WEEK'S PLAN </a>
-</div>-->
+  <hr class="hr-primary">
 
- 
-<style>
-  /* Reset the default hr style */
-hr {
-  border: none;
-}
+  <!-- Icon Links -->
+  <div class="icon-grid">
+    <a class="icon-card" href="period times.png">
+      <div class="icon">🏫</div>
+      <div class="icon-label">School Schedule</div>
+    </a>
 
-.hr-background-one {
-  height: 3px;
-  background: linear-gradient(to right, green, yellow, blue);
-  background-color: steelblue;
-  width: 100%;
-  border-style: dashed;
-    height: 1px;
-    width: 80%;
-  margin: 5px 0; /* 5px top/bottom margin, 0px left/right */
-}
+    <a class="icon-card" href="SBISD Calendar.jpeg">
+      <div class="icon">📅</div>
+      <div class="icon-label">SBISD Calendar</div>
+    </a>
 
-.hr-background-two {
-  height: 5px;
-  background: linear-gradient(to right, red, orange, yellow);
-  width: 100%;
-  border-style: dotted;
-    height: 1px;
-    width: 80%;
-    margin: 3px 0; /* 3px top/bottom margin, 0px left/right */
-}
-  }
-</style>
+    <a class="icon-card" href="Next SBISD Calendar.jpeg">
+      <div class="icon">🗓️</div>
+      <div class="icon-label">Next Calendar</div>
+    </a>
 
-<hr class="hr-background-one">
-</div>
-<!-- gets a blank Google Calendar that lets you get to the calendar on your computer. -->
-<!-- This Calendar cannot be updated with meetings ,etc. -->
-<div style="text-align:center;">
-<div class="calendar-container">
-  <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=America FNew_York"
-          style="border: 0" width="600" height="200" frameborder="0" scrolling="no">
-  </iframe>
-</div>
+    <a class="icon-card" href="Server setup procedure.txt">
+      <div class="icon">🛠️</div>
+      <div class="icon-label">Server Setup</div>
+    </a>
 
-<!--  branch to other pages -->
-<!--  groups and centers them. -->
-<!--  icons just don't seem appropriate  -->
+    <a class="icon-card" href="https://www.foxnews.com">
+      <div class="icon">📰</div>
+      <div class="icon-label">News</div>
+    </a>
 
-<hr class="hr-background-one"><br>
+    <a class="icon-card" href="Work Related Tasks.html">
+      <div class="icon">💼</div>
+      <div class="icon-label">Work Tasks</div>
+    </a>
 
+    <a class="icon-card" href="Personal Tasks.html">
+      <div class="icon">🏠</div>
+      <div class="icon-label">Personal Tasks</div>
+    </a>
+  </div>
 
+  <!-- Script -->
+  <script>
+    document.getElementById("pagePath").textContent =
+      "Page path: " + window.location.pathname;
+  </script>
 
-<hr class="hr-background-two">
-
-<div style="text-align:center;"><br>
-<a href='period times.png' style="margin-right: 15px;">
-School Schedule</a>
-<a href='SBISD Calendar.jpeg' style="margin-right: 15px;">SBISD Calendar</a>
-<a href='Next SBISD Calendar.jpeg' style="margin-right: 15px;">Next SBISD Calendar</a>
-<a href="https://www.springbranchisd.com/" style="margin-right: 15px;">SBISD.com</a>
-<a href='Server setup procedure.txt' style="margin-right: 15px;">Server Setup</a>
-<a href='https://www.foxnews.com' style="margin-right: 15px;">News Page</a>
-<a href='Work Related Tasks.html' style="margin-right: 15px;">Work Related Tasks</a>
-<a href='Personal Tasks.html' style="margin-right: 15px;">Non-Work Tasks</a>
-</div>
-
-<hr class="hr-background-two">
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
