@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Export Finished Tasks</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    pre {
+      background: #fff;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: left;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Export Finished Tasks (CSV)</h2>
+
+<p>
+This will export all finished tasks stored in your browser<br>
+as a CSV file for use in your Python report program.
+</p>
+
+<button onclick="exportFinishedTasksCSV()">
+  Download CSV
+</button>
+
+<pre id="preview"></pre>
+
+<script>
+function exportFinishedTasksCSV() {
+  var finishedTasks =
+    JSON.parse(localStorage.getItem('finishedTasks1')) || [];
+
+  if (finishedTasks.length === 0) {
+    alert("No finished tasks to export.");
+    return;
+  }
+
+  // CSV header
+  var csv = "task,due,finished_at\n";
+
+  // rows
+  finishedTasks.forEach(function (t) {
+    csv +=
+      csvEscape(t.task) + "," +
+      csvEscape(t.due) + "," +
+      csvEscape(t.finishedAt) + "\n";
+  });
+
+  // show preview
+  document.getElementById("preview").textContent = csv;
+
+  // trigger download
+  var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  var url = URL.createObjectURL(blob);
+
+  var link = document.createElement("a");
+  link.href = url;
+  link.download = "finished_tasks.csv";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
+}
+
+/* Proper CSV escaping */
+function csvEscape(value) {
+  if (value == null) return "";
+  value = value.toString();
+  if (value.search(/("|,|\n)/g) >= 0) {
+    value = '"' + value.replace(/"/g, '""') + '"';
+  }
+  return value;
+}
+</script>
+
+</body>
+</html>
