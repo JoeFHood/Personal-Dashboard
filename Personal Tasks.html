@@ -74,7 +74,6 @@
 
 <div id="clearWrapper">
   <button onclick="clearAll()">Clear Active Tasks</button>
-  <button onclick="window.location.replace('Export program.html')">Export</button>
 </div>
 
 <hr>
@@ -176,11 +175,11 @@ function finishTask(task, due) {
 
   if (finishedTask) {
     finishedTasks.push({
-      task: finishedTask.task,
-      due: finishedTask.due,
-      finishedAt: new Date().toLocaleDateString('en-CA')
-    });
-  }
+    task: finishedTask.task,
+    due: finishedTask.due,
+    finishedAt: new Date().toLocaleDateString('en-CA')
+  });
+}
 
   localStorage.setItem('tableData1', JSON.stringify(remaining));
   localStorage.setItem('finishedTasks1', JSON.stringify(finishedTasks));
